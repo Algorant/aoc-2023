@@ -1,5 +1,3 @@
-// use std::fs::File;
-// use std::io::{self, BufRead, BufReader, Write};
 use std::path::Path;
 
 fn main() {
@@ -14,20 +12,6 @@ fn main() {
 
 
 }
-
-// fn create_digit_mappings() -> HashMap<String, String> {
-//     let mut mappings = HashMap::new();
-//     mappings.insert("one".to_string(), "1".to_string());
-//     mappings.insert("two".to_string(), "2".to_string());
-//     mappings.insert("three".to_string(), "3".to_string());
-//     mappings.insert("four".to_string(), "4".to_string());
-//     mappings.insert("five".to_string(), "5".to_string());
-//     mappings.insert("six".to_string(), "6".to_string());
-//     mappings.insert("seven".to_string(), "7".to_string());
-//     mappings.insert("eight".to_string(), "8".to_string());
-//     mappings.insert("nine".to_string(), "9".to_string());
-//     mappings
-// }
 
 fn has_prefixes(line: &str) -> (char, bool) {
     let prefixes = vec![
