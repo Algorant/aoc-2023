@@ -4,7 +4,7 @@ use std::path::Path;
 
 
 fn main() {
-    let path = Path::new("/home/ivan/dev/git/aoc-2023/day-01/input1.txt");
+    let path = Path::new("/home/ivan/dev/aoc-2023/day-01/input1.txt");
     let file = File::open(&path).expect("Could not open file");
     let reader = BufReader::new(file);
 
