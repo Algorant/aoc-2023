@@ -1,33 +1,15 @@
 
 #[derive(Debug)]
-enum Color {
-    Red,
-    Green,
-    Blue,
+struct Round {
+    red: usize,
+    green: usize,
+    blue: usize,
 }
 
 impl Round {
     fn is_valid(&self) -> bool {
         self.red <= 12 && self.green <= 13 && self.blue <= 14
     }
-}
-
-impl From<&str> for Color {
-    fn from(s: &str) -> Self {
-        match s {
-            "red" => Color::Red,
-            "green" => Color::Green,
-            "blue" => Color::Blue,
-            _ => unimplemented!(),
-        }
-    }
-}
-
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
-struct Round {
-    red: usize,
-    green: usize,
-    blue: usize,
 }
 
 
@@ -38,11 +20,12 @@ impl From<&str> for Round {
         for color in colors {
             let mut iter = color.split_whitespace();
             let count = iter.next().unwrap().parse().unwrap();
-            let color = Color::from(iter.next().unwrap());
+            let color = iter.next().unwrap();
             match color {
-                Color::Red => round.red = count,
-                Color::Green => round.green = count,
-                Color::Blue => round.blue = count,
+                "red" => round.red = count,
+                "green" => round.green = count,
+                "blue" => round.blue = count,
+                _ => unreachable!(),
             }
         }
         round
@@ -53,6 +36,15 @@ impl From<&str> for Round {
 struct Game {
     id: usize,
     rounds: Vec<Round>,
+}
+
+impl Game {
+    fn power(&self) -> usize {
+        let red = self.rounds.iter().map(|r| r.red).max();
+        let green = self.rounds.iter().map(|r| r.green).max();
+        let blue = self.rounds.iter().map(|r| r.blue).max();
+        red.unwrap() * green.unwrap() * blue.unwrap()
+    }
 }
 
 impl From<&str> for Game {
@@ -72,23 +64,19 @@ impl From<&str> for Game {
 }
 
 fn main() {
+    // Part 1
     let input = std::fs::read_to_string("input.txt").unwrap();
     let games = input.lines().map(Game::from).collect::<Vec<_>>();
-    // let max_values = Round {
-    //     red: 12,
-    //     green: 13,
-    //     blue: 14,
-    // };
 
-    let mut sum = 0;
-    'game: for game in games {
-        for round in game.rounds {
-            if !round.is_valid()  {
-                continue 'game;
-            }
-        }
-        sum += game.id;
-    }
+    let sum = games
+        .iter()
+        .filter(|g| g.rounds.iter().all(|r| r.is_valid()))
+        .map(|g| g.id)
+        .sum::<usize>();
     println!("p1: {}", sum);
+
+    // Part 2
+    let sum_power = games.iter().map(|g| g.power()).sum::<usize>();
+    println!("p2: {}", sum_power);
 
 }
